@@ -1,1 +1,1 @@
-Hi there!
+Minesweeper is a puzzle game made by Microsoft where the objective is to clear every space that isn’t a mine. 

@@ -1,0 +1,57 @@
+*{
+    background-color: #918B8B;
+}
+input, button, submit {
+    color: inherit;
+    border: none;
+    padding: 0;
+    outline: inherit;
+}
+h1{
+    color: black;
+}
+button{
+    height: 16px;
+    width: 16px;
+}
+.game{
+    display: flex;
+}
+
+#smiley{
+    background: url('./images/Smiley');
+}
+
+#blank{
+    background: url('./images/Blank.png');
+}
+#num0{
+    background: url('./images/Empty.png');    
+}
+#num1{
+    background: url('./images/One.png');    
+}
+#num2{
+    background: url('./images/Two.png');    
+}
+#num3{
+    background: url('./images/Three.png');    
+}
+#num4{
+    background: url('./images/Four.png');    
+}
+#num5{
+    background: url('./images/Five.png');    
+}
+#num6{
+    background: url('./images/Six.png');    
+}
+#num7{
+    background: url('./images/Seven.png');    
+}
+#num8{
+    background: url('./images/Eight.png');    
+}
+#num9{
+    background: url('./images/Mine.png');    
+}
