@@ -18,40 +18,40 @@ button{
     display: flex;
 }
 
-#smiley{
+.smiley{
     background: url('./images/Smiley');
 }
 
-#blank{
+.blank{
     background: url('./images/Blank.png');
 }
-#num0{
+.num0{
     background: url('./images/Empty.png');    
 }
-#num1{
+.num1{
     background: url('./images/One.png');    
 }
-#num2{
+.num2{
     background: url('./images/Two.png');    
 }
-#num3{
+.num3{
     background: url('./images/Three.png');    
 }
-#num4{
+.num4{
     background: url('./images/Four.png');    
 }
-#num5{
+.num5{
     background: url('./images/Five.png');    
 }
-#num6{
+.num6{
     background: url('./images/Six.png');    
 }
-#num7{
+.num7{
     background: url('./images/Seven.png');    
 }
-#num8{
+.num8{
     background: url('./images/Eight.png');    
 }
-#num9{
+.num9{
     background: url('./images/Mine.png');    
 }

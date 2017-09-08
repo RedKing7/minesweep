@@ -9,15 +9,25 @@
 
 $('body').append
 
-for(let i=0; i < 10; i++){
-    $('div.game').append($(`<button id='blank'/>`));
+const MAX_COL = 3;
+const MAX_ROW = 3;
+
+for(let r = 0; r < MAX_ROW; r++){
+    for(let c = 0; c < MAX_COL; c++){
+        let $newSpace = $(`<button class='blank' data-row='row${r}' data-col='col${c}'/>`)
+        $('div.game').append($newSpace);
+    }
 }
 
-for(let i=0; i < 10; i++){
-    $('div.game').append($(`<button id='num${i}'/>`));
-}
+// for(let i=0; i < 10; i++){
+//     $('div.game').append($(`<button class='blank' data-id='num${i}'/>`));
+// }
 
-$('button#blank').on({
+// for(let i=0; i < 10; i++){
+//     $('div.game').append($(`<button class='num${i}'/>`));
+// }
+
+$('.game .blank').on({
     'mousedown': function(event){
         $(event.target).css('background', `url('./images/Empty.png')`)
     },
@@ -28,8 +38,9 @@ $('button#blank').on({
         $(event.target).css('background', `url('./images/Blank.png')`)
     },
     'click': function(event){
-        let thisBox = 0;
-        console.log(`${thisBox} was clicked`)
+        let col = $(event.target).attr('data-col');
+        let row = $(event.target).attr('data-row');
+        console.log(col, row)
     }
 })
 /*
