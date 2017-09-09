@@ -1,8 +1,7 @@
-$('body').append
-
 let COL = 10;
 let ROW = 10;
 let MINES = 20;
+
 
 for(let r = 0; r < ROW; r++){
     let $newRow = $(`<div class='row'></div>`);
