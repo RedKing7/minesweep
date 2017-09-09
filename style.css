@@ -1,7 +1,8 @@
 *{
     background-color: #918B8B;
+    border-collapse: collapse;
 }
-input, button, submit {
+button{
     color: inherit;
     border: none;
     padding: 0;
@@ -15,9 +16,13 @@ button{
     width: 16px;
 }
 .game{
-    display: flex;
-}
+    display: block;
 
+}
+.row{
+    vertical-align: top;
+    height: 16px;
+}
 .smiley{
     background: url('./images/Smiley');
 }

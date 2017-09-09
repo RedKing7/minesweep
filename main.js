@@ -1,31 +1,17 @@
-// $('h1').fadeIn();
-// let boxNum = 0;
-// let box = $(`<button id='num${boxNum}'/>`);
-// $('div.game').append(box);
-
-// boxNum = 3;
-// let three = $(`<button id='num${boxNum}'/>`);
-// $('div.game').append(three);
-
 $('body').append
 
-const MAX_COL = 3;
-const MAX_ROW = 3;
+let COL = 10;
+let ROW = 10;
+let MINES = 20;
 
-for(let r = 0; r < MAX_ROW; r++){
-    for(let c = 0; c < MAX_COL; c++){
+for(let r = 0; r < ROW; r++){
+    let $newRow = $(`<div class='row'></div>`);
+    for(let c = 0; c < COL; c++){
         let $newSpace = $(`<button class='blank' data-row='row${r}' data-col='col${c}'/>`)
-        $('div.game').append($newSpace);
+        $newRow.append($newSpace);
     }
+    $('.game').append($newRow);
 }
-
-// for(let i=0; i < 10; i++){
-//     $('div.game').append($(`<button class='blank' data-id='num${i}'/>`));
-// }
-
-// for(let i=0; i < 10; i++){
-//     $('div.game').append($(`<button class='num${i}'/>`));
-// }
 
 $('.game .blank').on({
     'mousedown': function(event){
@@ -38,23 +24,12 @@ $('.game .blank').on({
         $(event.target).css('background', `url('./images/Blank.png')`)
     },
     'click': function(event){
-        let col = $(event.target).attr('data-col');
-        let row = $(event.target).attr('data-row');
+        let col = $(event.target).attr('data-col')
+        let row = $(event.target).attr('data-row')
         console.log(col, row)
+        switch(event.which){
+            case 1: /*reveal()*/ console.log('left'); break;
+            case 3: /*flag()*/ console.log('right'); break;
+        }
     }
 })
-/*
- *$('box').on({
-     'click': function(event){
-        swithc(event.which){
-            case 1: reveal(); break;
-            case 3: flag();   break;
-            default: break;
-        }
-     })
- }) 
- * 
- * 
- * 
- * 
- */
