@@ -23,39 +23,53 @@ button{
     vertical-align: top;
     height: 16px;
 }
-.smiley{
-    background: url('./images/Smiley');
+.clickedMine{
+    background: url('./images/ClickedMine.png');
 }
-
+.empty{
+    background: url('./images/Empty.png');
+}
+.smiley{
+    background: url('./images/Smiley.png');
+}
+.notMine{
+    background: url('./images/NotMine.png');
+}
+.mine{
+    background: url('./images/Mine.png');
+}
 .blank{
     background: url('./images/Blank.png');
+}
+.flag{
+    background: url('./images/Flag.png');
 }
 .num0{
     background: url('./images/Empty.png');    
 }
 .num1{
-    background: url('./images/One.png');    
+    background: url('./images/num1.png');    
 }
 .num2{
-    background: url('./images/Two.png');    
+    background: url('./images/num2.png');    
 }
 .num3{
-    background: url('./images/Three.png');    
+    background: url('./images/num3.png');    
 }
 .num4{
-    background: url('./images/Four.png');    
+    background: url('./images/num4.png');    
 }
 .num5{
-    background: url('./images/Five.png');    
+    background: url('./images/num5.png');    
 }
 .num6{
-    background: url('./images/Six.png');    
+    background: url('./images/num6.png');    
 }
 .num7{
-    background: url('./images/Seven.png');    
+    background: url('./images/num7.png');    
 }
 .num8{
-    background: url('./images/Eight.png');    
+    background: url('./images/num8.png');    
 }
 .num9{
     background: url('./images/Mine.png');    
