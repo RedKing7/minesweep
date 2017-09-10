@@ -4,8 +4,8 @@ let mineLocations = [];
 
 const game = () =>{
     //set ROWs and COLs and MINES
-    let COL = 10;
-    let ROW = 10;
+    let COL = 8;
+    let ROW = 8;
     let MINES = 10;
     
     // let field = [[]];
@@ -23,13 +23,13 @@ const game = () =>{
                 $newSpace.attr('revealed', false);
                 $newRow.append($newSpace);
             }
-            $('.game').append($newRow);
+            $('#game').append($newRow);
         }
         addListeners();
     }
     
     const addListeners = () =>{
-        $('.game .blank').on({
+        $('#game .blank').on({
             'mousedown': function(event){
                 $(event.target).css('background', `url('./images/Empty.png')`)
             },
@@ -186,6 +186,7 @@ const game = () =>{
         //stop timer
         mineLocations.forEach(function(m){
             $(`.blank[data-row='row${m.row}'][data-col='col${m.col}']`).css('background', `url('./images/Flag.png')`);
+            $(`.blank[data-row='row${m.row}'][data-col='col${m.col}']`).off();
         });
         //switch face to sunglasses
     }

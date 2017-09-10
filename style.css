@@ -15,7 +15,16 @@ button{
     height: 16px;
     width: 16px;
 }
-.game{
+a#reset{
+    display: block;
+    height: 26px;
+    width: 26px;
+    background: url('./images/Smiley.png') no-repeat center;
+}
+#board{
+    display: block;
+}
+#game{
     display: block;
 
 }
