@@ -1,6 +1,7 @@
 let field = [[]];
 let mineLocations = [];
 
+//different themes?
 
 const game = () =>{
     //set ROWs and COLs and MINES
@@ -54,7 +55,7 @@ const game = () =>{
                         }
                         break;
                     case 3: //right click
-                        console.log('right');
+                        //console.log('right');
                         if(!firstClick){
                             flag(row, col);
                         }
@@ -75,7 +76,7 @@ const game = () =>{
             field[r][c] = 9;
             mineLocations.push({row: r, col: c});
         }
-        console.log(mineLocations);
+        //console.log(mineLocations);
     }
     
     const makeField = (rows, cols, mines, firstRow, firstCol) =>{
@@ -184,6 +185,7 @@ const game = () =>{
     const win = () =>{
         console.log('You WIN!');
         //stop timer
+        //mark flags that were on not mines
         mineLocations.forEach(function(m){
             $(`.blank[data-row='row${m.row}'][data-col='col${m.col}']`).css('background', `url('./images/Flag.png')`);
             $(`.blank[data-row='row${m.row}'][data-col='col${m.col}']`).off();
