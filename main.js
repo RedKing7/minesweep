@@ -71,24 +71,26 @@ const game = () =>{
                         $this.css('background', `url('./images/Blank.png')`);
                         $this.on('mouseup');
                         $this.on('mouseleave');
+                        $this.on('click');
                     }
                 } else {
                     if($(event.target).hasClass('blank')){
                         $(event.target).css('background', `url('./images/Empty.png')`);                        
                     }
                 }
+                $('#reset').css('background', `url('./images/Scared.png')`)
             },
             'mouseup': function(event){
-                $(event.target).css('background', `url('./images/Blank.png')`)        
+                $(event.target).css('background', `url('./images/Blank.png')`)
+                $('#reset').css('background', `url('./images/Smiley.png')`)
             },
             'mouseleave': function(event){
                 $(event.target).css('background', `url('./images/Blank.png')`)
+                $('#reset').css('background', `url('./images/Smiley.png')`)
             },
             'click': function(event){
                 let row = $(event.target).attr('data-row')
                 let col = $(event.target).attr('data-col')
-                //console.log($(event.target));
-                //console.log(row, col)
                 $(event.target).removeClass('hidden');                
                 if(firstClick){
                     makeField(ROW,COL,MINES, row, col);
@@ -207,7 +209,8 @@ const game = () =>{
                 $(`.blank[data-row='row${m.row}'][data-col='col${m.col}']`).css('background', `url('./images/Mine.png')`);
             }
         });
-        //switch face to dead, stop timer
+        $('#reset').css('background', `url('./images/Dead.png')`)
+        //stop timer
     }
     
     const win = () =>{
@@ -218,7 +221,7 @@ const game = () =>{
             $(`.blank[data-row='row${m.row}'][data-col='col${m.col}']`).css('background', `url('./images/Flag.png')`);
             $(`.blank[data-row='row${m.row}'][data-col='col${m.col}']`).off();
         });
-        //switch face to sunglasses
+        $('#reset').css('background', `url('./images/Win.png')`)
     }
 
 
