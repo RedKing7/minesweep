@@ -6,6 +6,8 @@ const game = () =>{
     let ROW = 8;
     let MINES = 10;
 
+    let minesLeft = MINES; //used for left LCD counter
+
     let field = [[]];
     let mineLocations = [];
     
@@ -29,12 +31,51 @@ const game = () =>{
     const addListeners = () =>{
         $('#game .blank').on({
             'mousedown': function(event){
-                if(event.which == 3){
-                    let row = $(event.target).attr('data-row')
-                    let col = $(event.target).attr('data-col')
-                    flag(row,col);
+                if(event.which === 3){
+                    let $this = $(event.target);
+                    //if blank
+                    //remove blank class
+                    //add flag class and picture
+                    //set attr('revealed', true)
+                    //minesLeft--;
+                    if($this.hasClass('blank')){
+                        $this.off('mouseup');
+                        $this.off('mouseleave');
+                        $this.off('click');
+                        $this.removeClass('blank').addClass('flag');
+                        $this.css('background', `url('./images/Flag.png')`);
+                        $this.attr('revealed', true);
+                        minesLeft--;
+                    } else
+
+                    //if flagged
+                    //remove flag class
+                    //add unknown class and picture
+                    //set attr('revealed', false)
+                    //turn 'click' back on
+                    //minesLeft++;
+                    if($this.hasClass('flag')){
+                        $this.removeClass('flag').addClass('unknown');
+                        $this.css('background', `url('./images/Unknown.png')`);
+                        $this.attr('revealed', false);
+                        $this.on('click');
+                        minesLeft++;
+                    } else 
+
+                    //if unknown
+                    //remove unknown class
+                    //add blank class and picture
+                    //turn 'mouseup' and 'mouseleave' back on
+                    if($this.hasClass('unknown')){
+                        $this.removeClass('unknown').addClass('blank');
+                        $this.css('background', `url('./images/Blank.png')`);
+                        $this.on('mouseup');
+                        $this.on('mouseleave');
+                    }
                 } else {
-                    $(event.target).css('background', `url('./images/Empty.png')`)
+                    if($(event.target).hasClass('blank')){
+                        $(event.target).css('background', `url('./images/Empty.png')`);                        
+                    }
                 }
             },
             'mouseup': function(event){
@@ -48,7 +89,7 @@ const game = () =>{
                 let col = $(event.target).attr('data-col')
                 //console.log($(event.target));
                 //console.log(row, col)
-                $(event.target).removeClass('hidden').addClass('revealed');                
+                $(event.target).removeClass('hidden');                
                 if(firstClick){
                     makeField(ROW,COL,MINES, row, col);
                 } else {
@@ -157,12 +198,6 @@ const game = () =>{
                 }
             }
         }
-    }
-    
-    const flag = (row, col) =>{
-        let $clicked = $(`.blank[data-row='${row}'][data-col='${col}']`);
-        //remove class Blank, add class Flagged
-        //decrement left counter
     }
     
     const gameOver = (row, col) =>{

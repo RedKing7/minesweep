@@ -1,4 +1,4 @@
-*{
+body{
     background-color: #918B8B;
     border-collapse: collapse;
 }
@@ -27,52 +27,6 @@ a#reset{
 .row{
     height: 16px;
 }
-
-.clickedMine{
-    background: url('./images/ClickedMine.png');
-}
-.empty{
-    background: url('./images/Empty.png');
-}
-.notMine{
-    background: url('./images/NotMine.png');
-}
-.mine{
-    background: url('./images/Mine.png');
-}
 .blank{
     background: url('./images/Blank.png');
-}
-.flag{
-    background: url('./images/Flag.png');
-}
-.num0{
-    background: url('./images/Empty.png');    
-}
-.num1{
-    background: url('./images/num1.png');    
-}
-.num2{
-    background: url('./images/num2.png');    
-}
-.num3{
-    background: url('./images/num3.png');    
-}
-.num4{
-    background: url('./images/num4.png');    
-}
-.num5{
-    background: url('./images/num5.png');    
-}
-.num6{
-    background: url('./images/num6.png');    
-}
-.num7{
-    background: url('./images/num7.png');    
-}
-.num8{
-    background: url('./images/num8.png');    
-}
-.num9{
-    background: url('./images/Mine.png');    
 }
