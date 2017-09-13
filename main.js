@@ -1,6 +1,3 @@
-let field = [[]];
-let mineLocations = [];
-
 //different themes?
 
 const game = () =>{
@@ -8,9 +5,9 @@ const game = () =>{
     let COL = 8;
     let ROW = 8;
     let MINES = 10;
-    
-    // let field = [[]];
-    // let mineLocations = [];
+
+    let field = [[]];
+    let mineLocations = [];
     
     let firstClick = true;
 
@@ -28,11 +25,17 @@ const game = () =>{
         }
         addListeners();
     }
-    
+
     const addListeners = () =>{
         $('#game .blank').on({
             'mousedown': function(event){
-                $(event.target).css('background', `url('./images/Empty.png')`)
+                if(event.which == 3){
+                    let row = $(event.target).attr('data-row')
+                    let col = $(event.target).attr('data-col')
+                    flag(row,col);
+                } else {
+                    $(event.target).css('background', `url('./images/Empty.png')`)
+                }
             },
             'mouseup': function(event){
                 $(event.target).css('background', `url('./images/Blank.png')`)        
@@ -41,25 +44,15 @@ const game = () =>{
                 $(event.target).css('background', `url('./images/Blank.png')`)
             },
             'click': function(event){
-                let col = $(event.target).attr('data-col')
                 let row = $(event.target).attr('data-row')
+                let col = $(event.target).attr('data-col')
                 //console.log($(event.target));
                 //console.log(row, col)
-                switch(event.which){
-                    case 1: //left click
-                        $(event.target).removeClass('hidden').addClass('revealed');                
-                        if(firstClick){
-                            makeField(ROW,COL,MINES, row, col);
-                        } else {
-                            reveal(row, col);
-                        }
-                        break;
-                    case 3: //right click
-                        //console.log('right');
-                        if(!firstClick){
-                            flag(row, col);
-                        }
-                        break;
+                $(event.target).removeClass('hidden').addClass('revealed');                
+                if(firstClick){
+                    makeField(ROW,COL,MINES, row, col);
+                } else {
+                    reveal(row, col);
                 }
             }
         })

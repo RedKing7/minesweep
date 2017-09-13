@@ -24,25 +24,15 @@ a#reset{
     width: 26px;
     background: url('./images/Smiley.png') no-repeat center;
 }
-#board{
-    display: block;
-}
-#game{
-    display: block;
-
-}
 .row{
-    vertical-align: top;
     height: 16px;
 }
+
 .clickedMine{
     background: url('./images/ClickedMine.png');
 }
 .empty{
     background: url('./images/Empty.png');
-}
-.smiley{
-    background: url('./images/Smiley.png');
 }
 .notMine{
     background: url('./images/NotMine.png');
