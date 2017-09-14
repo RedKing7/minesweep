@@ -60,6 +60,8 @@ const game = (choice) =>{
         $('#game').append($newRow);
     }
 
+    $('#board').css('width', COL*16);//makes sure LCD's are where they're supposed to be
+
     //define event handlers
     const Click = (event) =>{       //handles left clicks
         let row = $(event.target).attr('data-row')

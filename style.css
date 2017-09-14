@@ -22,6 +22,26 @@ button{
     height: 16px;
     width: 16px;
 }
+
+#head{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    background-color: rgb(192,192,192);
+}
+#mine-counter{
+    display: flex;
+    align-content: center;
+}
+#timer{
+    display: flex;
+    align-content: center;    
+}
+span img{
+    height: 23px;
+    width: 13px;
+}
+
 a#reset{
     display: block;
     height: 26px;
