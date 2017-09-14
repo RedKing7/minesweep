@@ -273,7 +273,7 @@ const game = (choice) =>{
                 let $this = $(`[data-row='row${row}'][data-col='col${col}']`);
                 if($this.hasClass('flag')){
                     console.log(row, col);
-                    if(! $this.hasClass('isMine')){
+                    if(field[row][col] !== 9){
                         console.log('faaail');
                         $this.css('background', `url('./images/NotMine.png')`);
                     }
