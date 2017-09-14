@@ -11,8 +11,12 @@ button{
 h1{
     color: black;
 }
-h2{
-    color: black;
+a.difficulty{
+    text-decoration: underline;
+    cursor: default;
+}
+a:hover{
+    color: blue;
 }
 button{
     height: 16px;

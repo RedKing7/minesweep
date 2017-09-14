@@ -1,12 +1,25 @@
+var difficulty;
 
 $('#reset').on('click', function(){
-    $('#reset').css('background', `url('./images/Smiley.png')`)                        
-    $('#game button').remove();
-    $('.row').remove();
-    //let n = (dropdown menu difficulty value)
-    
-    game(0);
+    newGame();
 })
+
+$('#easy').on('click', function(){
+    difficulty = 0;
+    newGame();
+})
+
+$('#medium').on('click', function(){
+    difficulty = 1;
+    newGame();
+})
+
+$('#hard').on('click', function(){
+    difficulty = 2;
+    newGame();
+})
+
+var field = [[]];
 
 const game = (choice) =>{
     //set ROWs and COLs and MINES
@@ -22,7 +35,7 @@ const game = (choice) =>{
         rows: 16,
         columns: 30,
         mines: 99
-    }]
+    }];
 
     var ROW = difficulty[choice].rows;
     var COL = difficulty[choice].columns;
@@ -30,7 +43,7 @@ const game = (choice) =>{
 
     var minesLeft = MINES; //used for left LCD counter
 
-    var field = [[]];
+    //var field = [[]];
     var mineLocations = [];
     
     var firstClick = true;
@@ -131,6 +144,7 @@ const game = (choice) =>{
             'click': function(event){
                 let row = $(event.target).attr('data-row')
                 let col = $(event.target).attr('data-col')
+                console.log(row, col);
                 $(event.target).removeClass('hidden');                
                 if(firstClick){
                     makeField(ROW,COL,MINES, row, col);
@@ -163,8 +177,9 @@ const game = (choice) =>{
                 field[r][c] = 0;
             }
         }
-        fr = Number(firstRow[3]);//get number from 'rowN'
-        fc = Number(firstCol[3]);//get number from 'colN'
+
+        fr = parseInt(firstRow.slice(3,firstRow.length), 10);//get number from 'rowN'
+        fc = parseInt(firstCol.slice(3,firstCol.length), 10);//get number from 'colN'
         placeMines(rows, cols, mines, fr, fc);
         getNums(rows, cols);
         reveal(firstRow,firstCol);
@@ -194,8 +209,9 @@ const game = (choice) =>{
         let $clicked;
         if(!isZero){
             $clicked = $(`.blank[data-row='${row}'][data-col='${col}']`);
-            row = Number(row[3]);//'rowN', row[3] = the row number
-            col = Number(col[3]);
+            typeof(row);
+            row = parseInt(row.slice(3,row.length), 10);//'rowN'
+            col = parseInt(col.slice(3,col.length), 10);
             thisnum = field[row][col];
         } else {
             $clicked = $(`.blank[data-row='row${row}'][data-col='col${col}']`);
@@ -280,4 +296,12 @@ const game = (choice) =>{
     addToDOM(ROW, COL);
 }
 
-game(0); //load page with an easy game
+const newGame = () =>{
+    $('#reset').css('background', `url('./images/Smiley.png')`)                        
+    $('#game button').remove();
+    $('.row').remove();
+    game(difficulty);
+}
+
+difficulty = 0;
+game(difficulty); //load page with an easy game
