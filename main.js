@@ -1,10 +1,32 @@
-//different themes?
 
-const game = () =>{
+$('#reset').on('click', function(){
+    $('#reset').css('background', `url('./images/Smiley.png')`)                        
+    $('#game button').remove();
+    $('.row').remove();
+    //let n = (dropdown menu difficulty value)
+    
+    game(0);
+})
+
+const game = (choice) =>{
     //set ROWs and COLs and MINES
-    var COL = 8;
-    var ROW = 8;
-    var MINES = 63;
+    var difficulty = [{
+        rows: 8,
+        columns: 8,
+        mines: 10
+    },{
+        rows: 16,
+        columns: 16,
+        mines: 40
+    },{
+        rows: 16,
+        columns: 30,
+        mines: 99
+    }]
+
+    var ROW = difficulty[choice].rows;
+    var COL = difficulty[choice].columns;
+    var MINES = difficulty[choice].mines;
 
     var minesLeft = MINES; //used for left LCD counter
 
@@ -246,7 +268,6 @@ const game = () =>{
     }
     
     const win = () =>{
-        console.log('You WIN!');
         //stop timer
         mineLocations.forEach(function(m){
             $(`.blank[data-row='row${m.row}'][data-col='col${m.col}']`).css('background', `url('./images/Flag.png')`);
@@ -259,4 +280,4 @@ const game = () =>{
     addToDOM(ROW, COL);
 }
 
-game();
+game(0); //load page with an easy game
