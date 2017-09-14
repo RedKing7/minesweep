@@ -19,8 +19,6 @@ $('#hard').on('click', function(){
     newGame();
 })
 
-var field = [[]];
-
 const game = (choice) =>{
     //set ROWs and COLs and MINES
     var difficulty = [{
@@ -43,7 +41,7 @@ const game = (choice) =>{
 
     var minesLeft = MINES; //used for left LCD counter
 
-    //var field = [[]];
+    var field = [[]];
     var mineLocations = [];
     
     var firstClick = true;
@@ -59,109 +57,79 @@ const game = (choice) =>{
     //     mouseDown = false;
     // });
 
-    const addToDOM = (rows, cols) =>{
-        for(let r = 0; r < rows; r++){
-            let $newRow = $(`<div class='row'></div>`);
-            for(let c = 0; c < cols; c++){
-                let $newSpace = $(`<button class='blank' data-row='row${r}' data-col='col${c}'/>`);
-                $newSpace.attr('revealed', false);
-                $newRow.append($newSpace);
-            }
-            $('#game').append($newRow);
+    //add field of buttons to the DOM
+    for(let r = 0; r < ROW; r++){
+        let $newRow = $(`<div class='row'></div>`);
+        for(let c = 0; c < COL; c++){
+            let $newSpace = $(`<button class='blank' data-row='row${r}' data-col='col${c}'/>`);
+            $newSpace.attr('revealed', false);
+            $newRow.append($newSpace);
         }
-        addListeners();
+        $('#game').append($newRow);
     }
 
-    const addListeners = () =>{
-        $('#game .blank').on({
-            'mousedown': function(event){
-                if(event.which === 3){
-                    $('#reset').css('background', `url('./images/Smiley.png')`)                    
-                    let $this = $(event.target);
-                    //if blank
-                    //remove blank class
-                    //add flag class and picture
-                    //set attr('revealed', true)
-                    //minesLeft--;
-                    if($this.hasClass('blank')){
-                        $this.off('mouseup');
-                        $this.off('mouseleave');
-                        $this.off('click');
-                        $this.removeClass('blank').addClass('flag');
-                        $this.css('background', `url('./images/Flag.png')`);
-                        $this.attr('revealed', true);
-                        minesLeft--;
-                    } else
-
-                    //if flagged
-                    //remove flag class
-                    //add unknown class and picture
-                    //set attr('revealed', false)
-                    //turn 'click' back on
-                    //minesLeft++;
-                    if($this.hasClass('flag')){
-                        $this.removeClass('flag').addClass('unknown');
-                        $this.css('background', `url('./images/Unknown.png')`);
-                        $this.attr('revealed', false);
-                        $this.on('click');
-                        minesLeft++;
-                    } else 
-
-                    //if unknown
-                    //remove unknown class
-                    //add blank class and picture
-                    //turn 'mouseup' and 'mouseleave' back on
-                    if($this.hasClass('unknown')){
-                        $this.removeClass('unknown').addClass('blank');
-                        $this.css('background', `url('./images/Blank.png')`);
-                        $this.on('mouseup');
-                        $this.on('mouseleave');
-                        $this.on('click');
-                    }
-                } else {
-                    if($(event.target).hasClass('blank')){
-                        $('#reset').css('background', `url('./images/Scared.png')`)                        
-                        $(event.target).css('background', `url('./images/Empty.png')`);                        
-                    }
+    //add listeners to the buttons
+    $('#game .blank').on({
+        'mousedown': function(event){
+            if(event.which === 3){
+                $('#reset').css('background', `url('./images/Smiley.png')`)                    
+                let $this = $(event.target);
+                if($this.hasClass('blank')){//if blank
+                    $this.off('mouseup');//remove listeners
+                    $this.off('mouseleave');
+                    $this.off('click');
+                    $this.removeClass('blank').addClass('flag');//remove blank class, add flag class
+                    $this.css('background', `url('./images/Flag.png')`);//change pic
+                    $this.attr('revealed', true);//set revealed
+                    minesLeft--;//decrement 'mine' counter
+                } else if($this.hasClass('flag')){//if flagged
+                    $this.removeClass('flag').addClass('unknown').addClass('blank');//remove flag class, add unknown and blank class
+                    $this.css('background', `url('./images/Unknown.png')`);//change pic
+                    $this.attr('revealed', false);//set revealed to false
+                    $this.on('click');//turn click listener back on
+                    minesLeft++;//un-decrement 'mine' counter
+                } else if($this.hasClass('unknown')){//if unknown
+                    $this.removeClass('unknown');//remove unknown class
+                    $this.css('background', `url('./images/Blank.png')`);//change pic
+                    $this.on('mouseup');//put listeners back on
+                    $this.on('mouseleave');
+                    //$this.on('click');
                 }
-            },
-            'mouseup': function(event){
-                $(event.target).css('background', `url('./images/Blank.png')`)
-                $('#reset').css('background', `url('./images/Smiley.png')`)
-            },
-            // 'mouseenter': function(event){
-            //     console.log(mouseDown);
-            //     if(mouseDown){
-            //         $(event.target).css('background', `url('./images/Empty.png')`)
-            //         $('#reset').css('background', `url('./images/Scared.png')`)
-            //     }        
-            // },
-            'mouseleave': function(event){
-                $(event.target).css('background', `url('./images/Blank.png')`)
-                $('#reset').css('background', `url('./images/Smiley.png')`)
-                $(event.target).off('mouseenter');
-            },
-            'click': function(event){
-                let row = $(event.target).attr('data-row')
-                let col = $(event.target).attr('data-col')
-                console.log(row, col);
-                $(event.target).removeClass('hidden');                
-                if(firstClick){
-                    makeField(ROW,COL,MINES, row, col);
-                } else {
-                    reveal(row, col);
+            } else {
+                if($(event.target).hasClass('blank')){
+                    $('#reset').css('background', `url('./images/Scared.png')`)                        
+                    $(event.target).css('background', `url('./images/Empty.png')`);                        
                 }
             }
-        })
-    }
+        },
+        'mouseup': function(event){
+            $(event.target).css('background', `url('./images/Blank.png')`)
+            $('#reset').css('background', `url('./images/Smiley.png')`)
+        },
+        'mouseleave': function(event){
+            $(event.target).css('background', `url('./images/Blank.png')`)
+            $('#reset').css('background', `url('./images/Smiley.png')`)
+            $(event.target).off('mouseenter');
+        },
+        'click': function(event){
+            let row = $(event.target).attr('data-row')
+            let col = $(event.target).attr('data-col')
+            $(event.target).removeClass('hidden');                
+            if(firstClick){
+                makeField(row, col);
+            } else {
+                reveal(row, col);
+            }
+        }
+    })
     
-    const placeMines = (rows, cols, mines, fR, fC) =>{
-        for(let m=0; m<mines; m++){
+    const placeMines = (fR, fC) =>{
+        for(let m=0; m<MINES; m++){
             let r;
             let c;
             do{
-                r = Math.floor(Math.random() * rows);
-                c = Math.floor(Math.random() * cols);
+                r = Math.floor(Math.random() * ROW);
+                c = Math.floor(Math.random() * COL);
             }while((field[r][c] === 9) || ((r === fR) && (c === fC)));//make sure space isn't the first click or already a mine
             field[r][c] = 9;
             mineLocations.push({row: r, col: c});
@@ -169,29 +137,29 @@ const game = (choice) =>{
         //console.log(mineLocations);
     }
     
-    const makeField = (rows, cols, mines, firstRow, firstCol) =>{
+    const makeField = (firstRow, firstCol) =>{
         firstClick = false;
-        for(let r=0; r<rows; r++){
+        for(let r=0; r<ROW; r++){
             field[r] = [];
-            for(let c=0; c<cols; c++){
+            for(let c=0; c<COL; c++){
                 field[r][c] = 0;
             }
         }
 
         fr = parseInt(firstRow.slice(3,firstRow.length), 10);//get number from 'rowN'
         fc = parseInt(firstCol.slice(3,firstCol.length), 10);//get number from 'colN'
-        placeMines(rows, cols, mines, fr, fc);
-        getNums(rows, cols);
+        placeMines(fr, fc);
+        getNums();
         reveal(firstRow,firstCol);
     }
     
-    const getNums = (rows, cols) =>{
+    const getNums = () =>{
         for(let m=0; m<mineLocations.length; m++){
             let r = mineLocations[m].row;
             let c = mineLocations[m].col;
             for(let h = r - 1; h <= r + 1; h++){
                 for(let v = c -1; v <= c + 1; v++){
-                    if((0 <= h) && (h < rows) && (0 <= v) && (v < cols)){
+                    if((0 <= h) && (h < ROW) && (0 <= v) && (v < COL)){
                         if(!((r === h) && (c === v))){
                             if(field[h][v] !== 9){
                                 field[h][v] += 1;
@@ -261,26 +229,28 @@ const game = (choice) =>{
     
     const gameOver = (row, col) =>{
         $('#reset').css('background', `url('./images/Dead.png')`)        
+        //stop timer
+        //mark mines that weren't flagged
         mineLocations.forEach(function(m){
-            if(!((m.row === row) && (m.col === col))){
-                $(`.blank[data-row='row${m.row}'][data-col='col${m.col}']`).css('background', `url('./images/Mine.png')`);
-                $(`.blank[data-row='row${m.row}'][data-col='col${m.col}']`).addClass('isMine');
+            if(!((m.row === row) && (m.col === col))){//don't re-color the mine that was clicked
+                let $mine = $(`[data-row='row${m.row}'][data-col='col${m.col}']`);
+                if(!$mine.hasClass('flag')){
+                    $mine.css('background', `url('./images/Mine.png')`);
+                    $mine.addClass('isMine');
+                }
             }
         });
-        //mark flags that were on not mines
+        //mark flags that were on not mines with an X
         for(let row = 0; row < ROW; row++){
             for(let col = 0; col < COL; col++){
-                let $this = $(`[data-row='row${row}'][data-col='col${col}']`);
-                if($this.hasClass('flag')){
-                    console.log(row, col);
+                let $flag = $(`[data-row='row${row}'][data-col='col${col}']`);
+                if($flag.hasClass('flag')){
                     if(field[row][col] !== 9){
-                        console.log('faaail');
-                        $this.css('background', `url('./images/NotMine.png')`);
+                        $flag.css('background', `url('./images/NotMine.png')`);
                     }
                 }
             }
         }
-        //stop timer
     }
     
     const win = () =>{
@@ -291,9 +261,6 @@ const game = (choice) =>{
         });
         $('#reset').css('background', `url('./images/Win.png')`)
     }
-
-
-    addToDOM(ROW, COL);
 }
 
 const newGame = () =>{
