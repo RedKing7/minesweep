@@ -1,5 +1,5 @@
 body{
-    background-color: #918B8B;
+    background-color: rgb(192,192,192);;
     border-collapse: collapse;
 }
 button{
@@ -12,8 +12,8 @@ h1{
     color: black;
 }
 a.difficulty{
-    text-decoration: underline;
     cursor: default;
+    padding: 2px;
 }
 a:hover{
     color: blue;
@@ -27,7 +27,6 @@ button{
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    background-color: rgb(192,192,192);
 }
 #mine-counter{
     display: flex;
