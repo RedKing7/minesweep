@@ -2,19 +2,28 @@
 
 const game = () =>{
     //set ROWs and COLs and MINES
-    let COL = 8;
-    let ROW = 8;
-    let MINES = 10;
+    var COL = 8;
+    var ROW = 8;
+    var MINES = 63;
 
-    let minesLeft = MINES; //used for left LCD counter
+    var minesLeft = MINES; //used for left LCD counter
 
-    let field = [[]];
-    let mineLocations = [];
+    var field = [[]];
+    var mineLocations = [];
     
-    let firstClick = true;
+    var firstClick = true;
 
-    let remainingSquares = (COL*ROW)-MINES;
+    var remainingSquares = (COL*ROW)-MINES;
     
+
+    let mouseDown;
+    
+    // $(document).mousedown(function(){
+    //     mouseDown = true;
+    // }).mouseup(function(){
+    //     mouseDown = false;
+    // });
+
     const addToDOM = (rows, cols) =>{
         for(let r = 0; r < rows; r++){
             let $newRow = $(`<div class='row'></div>`);
@@ -32,6 +41,7 @@ const game = () =>{
         $('#game .blank').on({
             'mousedown': function(event){
                 if(event.which === 3){
+                    $('#reset').css('background', `url('./images/Smiley.png')`)                    
                     let $this = $(event.target);
                     //if blank
                     //remove blank class
@@ -75,18 +85,26 @@ const game = () =>{
                     }
                 } else {
                     if($(event.target).hasClass('blank')){
+                        $('#reset').css('background', `url('./images/Scared.png')`)                        
                         $(event.target).css('background', `url('./images/Empty.png')`);                        
                     }
                 }
-                $('#reset').css('background', `url('./images/Scared.png')`)
             },
             'mouseup': function(event){
                 $(event.target).css('background', `url('./images/Blank.png')`)
                 $('#reset').css('background', `url('./images/Smiley.png')`)
             },
+            // 'mouseenter': function(event){
+            //     console.log(mouseDown);
+            //     if(mouseDown){
+            //         $(event.target).css('background', `url('./images/Empty.png')`)
+            //         $('#reset').css('background', `url('./images/Scared.png')`)
+            //     }        
+            // },
             'mouseleave': function(event){
                 $(event.target).css('background', `url('./images/Blank.png')`)
                 $('#reset').css('background', `url('./images/Smiley.png')`)
+                $(event.target).off('mouseenter');
             },
             'click': function(event){
                 let row = $(event.target).attr('data-row')
@@ -154,7 +172,7 @@ const game = () =>{
         let $clicked;
         if(!isZero){
             $clicked = $(`.blank[data-row='${row}'][data-col='${col}']`);
-            row = Number(row[3]);
+            row = Number(row[3]);//'rowN', row[3] = the row number
             col = Number(col[3]);
             thisnum = field[row][col];
         } else {
@@ -172,6 +190,7 @@ const game = () =>{
                 $('button').off();
                 $clicked.css('background', `url('./images/ClickedMine.png')`);
                 gameOver(row, col);
+                return;//make sure it doesn't call 'win()' after clicking a mine if there's only one clear space left
                 break;
             default:
                 $clicked.off();
@@ -203,20 +222,32 @@ const game = () =>{
     }
     
     const gameOver = (row, col) =>{
+        $('#reset').css('background', `url('./images/Dead.png')`)        
         mineLocations.forEach(function(m){
-            //console.log(m.row, m.col);
             if(!((m.row === row) && (m.col === col))){
                 $(`.blank[data-row='row${m.row}'][data-col='col${m.col}']`).css('background', `url('./images/Mine.png')`);
+                $(`.blank[data-row='row${m.row}'][data-col='col${m.col}']`).addClass('isMine');
             }
         });
-        $('#reset').css('background', `url('./images/Dead.png')`)
+        //mark flags that were on not mines
+        //console.log(field);
+        field.forEach(function(row) {
+            row.forEach(function(f){
+                //console.log(f);
+                if(! $(`.blank[data-row='row${f.row}'][data-col='col${f.col}']`).hasClass('isMine')){
+                    if($(`.blank[data-row='row${f.row}'][data-col='col${f.col}']`).hasClass('flag')){
+                        console.log('faaail');
+                        $(`.blank[data-row='row${f.row}'][data-col='col${f.col}']`).css('background', `url('./images/NotMine.png')`);
+                    }
+                }
+            });
+        });
         //stop timer
     }
     
     const win = () =>{
         console.log('You WIN!');
         //stop timer
-        //mark flags that were on not mines
         mineLocations.forEach(function(m){
             $(`.blank[data-row='row${m.row}'][data-col='col${m.col}']`).css('background', `url('./images/Flag.png')`);
             $(`.blank[data-row='row${m.row}'][data-col='col${m.col}']`).off();
