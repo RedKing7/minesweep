@@ -252,18 +252,18 @@ const game = (choice) =>{
             }
         });
         //mark flags that were on not mines
-        //console.log(field);
-        field.forEach(function(row) {
-            row.forEach(function(f){
-                //console.log(f);
-                if(! $(`.blank[data-row='row${f.row}'][data-col='col${f.col}']`).hasClass('isMine')){
-                    if($(`.blank[data-row='row${f.row}'][data-col='col${f.col}']`).hasClass('flag')){
+        for(let row = 0; row < ROW; row++){
+            for(let col = 0; col < COL; col++){
+                let $this = $(`[data-row='row${row}'][data-col='col${col}']`);
+                if($this.hasClass('flag')){
+                    console.log(row, col);
+                    if(! $this.hasClass('isMine')){
                         console.log('faaail');
-                        $(`.blank[data-row='row${f.row}'][data-col='col${f.col}']`).css('background', `url('./images/NotMine.png')`);
+                        $this.css('background', `url('./images/NotMine.png')`);
                     }
                 }
-            });
-        });
+            }
+        }
         //stop timer
     }
     
