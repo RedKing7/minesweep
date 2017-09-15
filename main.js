@@ -404,3 +404,22 @@ const game = (choice) =>{
 
 difficulty = 0;
 game(difficulty); //load page with an easy game
+
+//pre-load images
+for(let i = 0; i < 9; i++){
+    $('#preload').append(`<img src='images/time${i}.gif'></img>`)
+    if(i > 0){
+        $('#preload').append(`<img src='images/num${i}.png'></img>`)
+    }
+}
+$('#preload').append(`<img src='images/time-.gif'></img>`)
+$('#preload').append(`<img src='images/Scared.png'></img>`)
+$('#preload').append(`<img src='images/Win.png'></img>`)
+$('#preload').append(`<img src='images/Dead.png'></img>`)
+$('#preload').append(`<img src='images/Scared.png'></img>`)
+$('#preload').append(`<img src='images/Unknown.png'></img>`)
+$('#preload').append(`<img src='images/Flag.png'></img>`)
+$('#preload').append(`<img src='images/Empty.png'></img>`)
+$('#preload').append(`<img src='images/ClickedMine.png'></img>`)
+
+$('#preload').remove();

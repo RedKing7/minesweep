@@ -75,3 +75,8 @@ a#reset{
 .blank{
     background: url('./images/Blank.png');
 }
+
+#preload{
+    display: none;
+    visibility: hidden;
+}
