@@ -1,27 +1,8 @@
 var difficulty;
 
-$('#reset').on('click', function(){
-    newGame();
-})
-
-$('#easy').on('click', function(){
-    difficulty = 0;
-    newGame();
-})
-
-$('#medium').on('click', function(){
-    difficulty = 1;
-    newGame();
-})
-
-$('#hard').on('click', function(){
-    difficulty = 2;
-    newGame();
-})
-
 const game = (choice) =>{
     //set ROWs and COLs and MINES
-    var difficulty = [{
+    var difficultyVariables = [{
         rows: 8,
         columns: 8,
         mines: 10
@@ -35,9 +16,9 @@ const game = (choice) =>{
         mines: 99
     }];
 
-    var ROW = difficulty[choice].rows;
-    var COL = difficulty[choice].columns;
-    var MINES = difficulty[choice].mines;
+    var ROW = difficultyVariables[choice].rows;
+    var COL = difficultyVariables[choice].columns;
+    var MINES = difficultyVariables[choice].mines;
 
     var minesLeft = MINES; //used for left LCD counter
 
@@ -49,9 +30,14 @@ const game = (choice) =>{
 
     var remainingSquares = (COL*ROW)-MINES;
 
+    var timerInterval;
+    var currentTime = 0;
+
     //add field of blank buttons to the DOM
     for(let r = 0; r < ROW; r++){
         let $newRow = $(`<div class='row'></div>`);
+        let $border = $(`<img class='borderVertical'>`);
+        $newRow.append($border)
         for(let c = 0; c < COL; c++){
             let $newSpace = $(`<button class='blank' data-row='row${r}' data-col='col${c}'/>`);
             $newSpace.attr('revealed', false);
@@ -60,7 +46,7 @@ const game = (choice) =>{
         $('#game').append($newRow);
     }
 
-    $('#board').css('width', COL*16);//makes sure LCD's are where they're supposed to be
+    $('#board').css('width', COL*16 + 20);//makes sure LCD's are where they're supposed to be. (border is 10px thick on each side)
 
     //define event handlers
     const Click = (event) =>{       //handles left clicks
@@ -70,6 +56,7 @@ const game = (choice) =>{
         $(event.target).removeClass('hidden');                
         if(firstClick){
             makeField(row, col);
+            timerInterval = setInterval(updateTimer, 1000);
         } else {
             reveal(row, col);
         }
@@ -106,6 +93,7 @@ const game = (choice) =>{
                 $this.css('background', `url('./images/Blank.png')`);//change pic
                 $this.on('mouseleave', MouseLeave);
             }
+            updateMineCounter();
         } else {
             if($(event.target).hasClass('blank')){
                 $('#reset').css('background', `url('./images/Scared.png')`)                        
@@ -194,6 +182,7 @@ const game = (choice) =>{
                 break;
             case 9:
                 $clicked.css('background', `url('./images/ClickedMine.png')`);
+                clearInterval(timerInterval);
                 gameOver(row, col);
                 return;//make sure it doesn't call 'win()' after clicking a mine if there's only one clear space left
                 break;
@@ -202,6 +191,7 @@ const game = (choice) =>{
                 $clicked.css('background', `url('./images/num${thisnum}.png')`);
         }
         if(remainingSquares === 0){
+            clearInterval(timerInterval);
             win();
         }
     }
@@ -260,14 +250,83 @@ const game = (choice) =>{
         });
         $('#reset').css('background', `url('./images/Win.png')`)
     }
-}
 
-const newGame = () =>{
-    $('#reset').css('background', `url('./images/Smiley.png')`)                        
-    $('#game button').remove();
-    $('.row').remove();
-    game(difficulty);
+    const updateMineCounter = () =>{
+        let $hundreds = $('img#mine-hundreds');
+        let $tens = $('img#mine-tens');
+        let $ones = $('img#mine-ones');
+
+        let arrMines = String(minesLeft).split('');
+        let hundred = arrMines[arrMines.length - 3];
+        let ten = arrMines[arrMines.length - 2];
+        let one = arrMines[arrMines.length - 1];
+
+        if(minesLeft < 0){
+            $hundreds.css('src', `./images/time-.gif`)
+        } else {
+            $hundreds.css('src', `./images/time0.gif`)
+        }
+
+        if(hundred !== undefined){
+            $hundreds.attr('src', `./images/time${hundred}.gif`)
+        } else {
+            $hundreds.attr('src', `./images/time0.gif`)
+        }
+        if(ten !== undefined){
+            $tens.attr('src', `./images/time${ten}.gif`)            
+        } else {
+            $tens.attr('src', `./images/time0.gif`)
+        }
+        if(one !== undefined){
+            $ones.attr('src', `./images/time${one}.gif`)
+        } else {
+            $ones.attr('src', `./images/time0.gif`)
+        }
+    }
+
+    const updateTimer = () =>{
+        currentTime++;
+        let arrTime = String(currentTime).split('');
+        let thousand = arrTime[arrTime.length - 4];
+        let hundred = arrTime[arrTime.length - 3];
+        let ten = arrTime[arrTime.length - 2];
+        let one = arrTime[arrTime.length - 1];
+
+        let $hundreds = $('#time-hundreds');
+        let $tens = $('#time-tens');
+        let $ones = $('#time-ones');
+
+        //if time > 1000, digits lock at '9'
+        if((hundred !== undefined) && (thousand === undefined)){
+            $hundreds.attr('src', `./images/time${hundred}.gif`)
+        }
+        if((ten !== undefined) && (thousand === undefined)){
+            $tens.attr('src', `./images/time${ten}.gif`)            
+        }
+        if((one !== undefined) && (thousand === undefined)){
+            $ones.attr('src', `./images/time${one}.gif`)
+        }
+    }
 }
 
 difficulty = 0;
 game(difficulty); //load page with an easy game
+
+const newGame = (event) =>{
+    let level = event.data.param;
+    difficulty = level;
+    //clearInterval(timerInterval);
+    $('#reset').css('background', `url('./images/Smiley.png')`)                        
+    $('#game button').remove();
+    $('.row').remove();
+    console.log(level);
+    game(level);
+}
+
+$('#reset').click({param: difficulty}, newGame)
+
+$('#easy').click({param: 0}, newGame)
+
+$('#medium').click({param: 1}, newGame)
+
+$('#hard').click({param: 2}, newGame)
