@@ -1,6 +1,5 @@
 body{
     background-color: rgb(192,192,192);;
-    border-collapse: collapse;
 }
 button{
     color: inherit;
@@ -22,37 +21,56 @@ button{
     height: 16px;
     width: 16px;
 }
-borderVertical{
+.borderVertical{
     height: 16px;
     width: 10px;
+}
+.borderHorizontal{
+    height: 10px;
+    width: 16px;
 }
 
 #head{
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
 }
 #mine-counter{
     display: flex;
-    align-content: center;
+    margin-right: auto;
+    margin-left: 2px;
 }
 #timer{
     display: flex;
-    align-content: center;    
+    margin-left: auto;
+    margin-right: 2px;
 }
-span img{
+#mine-counter img, #timer img{
     height: 23px;
     width: 13px;
 }
 
 a#reset{
-    display: block;
     height: 26px;
     width: 26px;
     background: url('./images/Smiley.png') no-repeat center;
 }
 .row{
     height: 16px;
+}
+.headBorder{
+    height: 26px;
+    width: 10px;
+}
+.borderRow{
+    height: 10px;
+    padding-bottom: 4px;
+    margin-top: -4px;
+}
+.dividerRow{
+    height: 10px;
+    margin-top: -4px;
+    padding-bottom: 4px;
 }
 .blank{
     background: url('./images/Blank.png');

@@ -33,20 +33,79 @@ const game = (choice) =>{
     var timerInterval;
     var currentTime = 0;
 
-    //add field of blank buttons to the DOM
-    for(let r = 0; r < ROW; r++){
-        let $newRow = $(`<div class='row'></div>`);
-        let $border = $(`<img class='borderVertical'>`);
-        $newRow.append($border)
-        for(let c = 0; c < COL; c++){
-            let $newSpace = $(`<button class='blank' data-row='row${r}' data-col='col${c}'/>`);
-            $newSpace.attr('revealed', false);
-            $newRow.append($newSpace);
+    const buildDisplay = () =>{
+        //add field of blank buttons to the DOM
+        for(let r = 0; r < ROW; r++){
+            let $newRow = $(`<div class='row'></div>`);
+            let $borderL = $(`<img class='borderVertical'>`);
+            $borderL.attr('src', `./images/borderVert.gif`);
+            $newRow.append($borderL)
+            for(let c = 0; c < COL; c++){
+                let $newSpace = $(`<button class='blank' data-row='row${r}' data-col='col${c}'/>`);
+                $newSpace.attr('revealed', false);
+                $newRow.append($newSpace);
+            }
+            let $borderR = $(`<img class='borderVertical'>`);
+            $borderR.attr('src', `./images/borderVert.gif`);
+            $newRow.append($borderR)
+            $('#game').append($newRow);
         }
-        $('#game').append($newRow);
+    
+        //puts border above LCD's and smiley
+        let $borderTL = $(`<img>`);
+        $borderTL.attr('src', `./images/borderTopLeft.gif`);
+        let $borderTR = $(`<img>`);
+        $borderTR.attr('src', `./images/borderTopRight.gif`);
+        let $topBar = $(`<div class='borderRow'></div>`);
+        $topBar.append($borderTL);
+        for(let i = 0; i < COL; i++){
+            let $borderT = $(`<img>`);
+            $borderT.attr('src', `./images/borderHor.gif`);
+            $borderT.css('width', '16px');
+            $borderT.css('height', '10px');
+            $topBar.append($borderT)
+        }
+        $topBar.append($borderTR);
+        $('#board').prepend($topBar);
+
+        //puts divider between smiley/lcd bar and field
+        let $borderLJ = $(`<img>`);
+        $borderLJ.attr('src', `./images/borderLeftJoint.gif`);
+        let $borderRJ = $(`<img>`);
+        $borderRJ.attr('src', `./images/borderRightJoint.gif`);
+        let $dividerBar = $(`<div class='dividerRow'></div>`);
+        $dividerBar.append($borderLJ);
+        for(let i = 0; i < COL; i++){
+            let $borderD = $(`<img>`);
+            $borderD.attr('src', `./images/borderHor.gif`);
+            $borderD.css('width', '16px');
+            $borderD.css('height', '10px');
+            $dividerBar.append($borderD)
+        }
+        $dividerBar.append($borderRJ);
+        $dividerBar.insertAfter('span#head');
+
+        //puts border on bottom of page
+        let $borderBL = $(`<img>`);
+        $borderBL.attr('src', `./images/borderBottomLeft.gif`);
+        let $bottomBar = $(`<div class='borderRow'></div>`);
+        $bottomBar.append($borderBL);
+        for(let i = 0; i < COL; i++){
+            let $borderB = $(`<img>`);
+            $borderB.attr('src', `./images/borderHor.gif`);
+            $borderB.css('width', '16px');
+            $borderB.css('height', '10px');
+            $bottomBar.append($borderB)
+        }
+        let $borderBR = $(`<img>`);
+        $borderBR.attr('src', `./images/borderBottomRight.gif`);
+        $bottomBar.append($borderBR);
+        $('#board').append($bottomBar);
+
+        $('#board').css('width', COL*16 + 20);//makes sure LCD's are where they're supposed to be. (border is 10px thick on each side)
     }
 
-    $('#board').css('width', COL*16 + 20);//makes sure LCD's are where they're supposed to be. (border is 10px thick on each side)
+    buildDisplay();//put it in a function for collapsability
 
     //define event handlers
     const Click = (event) =>{       //handles left clicks
@@ -251,6 +310,7 @@ const game = (choice) =>{
         $('#reset').css('background', `url('./images/Win.png')`)
     }
 
+    //draw MINE count minus # of flags on left LCD
     const updateMineCounter = () =>{
         let $hundreds = $('img#mine-hundreds');
         let $tens = $('img#mine-tens');
@@ -262,9 +322,9 @@ const game = (choice) =>{
         let one = arrMines[arrMines.length - 1];
 
         if(minesLeft < 0){
-            $hundreds.css('src', `./images/time-.gif`)
+            $hundreds.attr('src', `./images/time-.gif`)
         } else {
-            $hundreds.css('src', `./images/time0.gif`)
+            $hundreds.attr('src', `./images/time0.gif`)
         }
 
         if(hundred !== undefined){
@@ -284,8 +344,11 @@ const game = (choice) =>{
         }
     }
 
+    //draw time elapsed since first click on right LCD
     const updateTimer = () =>{
-        currentTime++;
+        if(!firstClick){
+            currentTime++;
+        }
         let arrTime = String(currentTime).split('');
         let thousand = arrTime[arrTime.length - 4];
         let hundred = arrTime[arrTime.length - 3];
@@ -306,27 +369,38 @@ const game = (choice) =>{
         if((one !== undefined) && (thousand === undefined)){
             $ones.attr('src', `./images/time${one}.gif`)
         }
+
+        if(currentTime === 0){
+            $hundreds.attr('src', `./images/time0.gif`);
+            $tens.attr('src', `./images/time0.gif`);
+            $ones.attr('src', `./images/time0.gif`);
+        }
     }
+
+    //reset LCD's whenever a game starts
+    updateMineCounter();
+    updateTimer();
+
+    const newGame = (event) =>{
+        let level = event.data.param;
+        difficulty = level;
+        clearInterval(timerInterval);
+        currentTime = 0;
+        $('#reset').css('background', `url('./images/Smiley.png')`)                        
+        $('#game button').remove();
+        $('.row').remove();
+        $('.borderRow').remove();
+        $('.dividerRow').remove();
+        game(level);
+    }
+
+    //event listeners for changing difficulty and resetting game
+    //.off() makes sure they are only called once
+    $('#reset').off().click({param: difficulty}, newGame);
+    $('#easy').off().click({param: 0}, newGame);
+    $('#medium').off().click({param: 1}, newGame);
+    $('#hard').off().click({param: 2}, newGame);
 }
 
 difficulty = 0;
 game(difficulty); //load page with an easy game
-
-const newGame = (event) =>{
-    let level = event.data.param;
-    difficulty = level;
-    //clearInterval(timerInterval);
-    $('#reset').css('background', `url('./images/Smiley.png')`)                        
-    $('#game button').remove();
-    $('.row').remove();
-    console.log(level);
-    game(level);
-}
-
-$('#reset').click({param: difficulty}, newGame)
-
-$('#easy').click({param: 0}, newGame)
-
-$('#medium').click({param: 1}, newGame)
-
-$('#hard').click({param: 2}, newGame)
