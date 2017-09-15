@@ -64,6 +64,7 @@ const game = (choice) =>{
 
     //define event handlers
     const Click = (event) =>{       //handles left clicks
+        $('#reset').css('background', `url('./images/Smiley.png')`)        
         let row = $(event.target).attr('data-row')
         let col = $(event.target).attr('data-col')
         $(event.target).removeClass('hidden');                
@@ -74,11 +75,12 @@ const game = (choice) =>{
         }
     }
     const MouseLeave = (event) =>{  //purely cosmetic
-        $(event.target).css('background', `url('./images/Blank.png')`)
-        $('#reset').css('background', `url('./images/Smiley.png')`)
-    }
-    const MouseUp = (event) =>{     //also cosmetic
-        $(event.target).css('background', `url('./images/Blank.png')`)
+        $this = $(event.target);
+        if($this.hasClass('unknown')){
+            $this.css('background', `url('./images/Unknown.png')`)
+        } else {
+            $this.css('background', `url('./images/Blank.png')`)
+        }
         $('#reset').css('background', `url('./images/Smiley.png')`)
     }
     const MouseDown = (event) =>{   //biggest and messiest because of right clicking + flagging
@@ -86,7 +88,6 @@ const game = (choice) =>{
             $('#reset').css('background', `url('./images/Smiley.png')`)                    
             let $this = $(event.target);
             if(($this.hasClass('blank')) && !($this.hasClass('unknown'))){                            //if blank and not unknown
-                $this.off('mouseup', MouseUp);                      //remove listeners
                 $this.off('mouseleave', MouseLeave);
                 $this.off('click', Click);
                 $this.removeClass('blank').addClass('flag');        //remove blank class, add flag class
@@ -103,7 +104,6 @@ const game = (choice) =>{
             } else if($this.hasClass('unknown')){                    //if unknown
                 $this.removeClass('unknown');                        //remove unknown class
                 $this.css('background', `url('./images/Blank.png')`);//change pic
-                $this.on('mouseup', MouseUp);                        //put listeners back on
                 $this.on('mouseleave', MouseLeave);
             }
         } else {
@@ -117,7 +117,6 @@ const game = (choice) =>{
     //add listeners to the buttons
     $('#game .blank').on({
         'mousedown': MouseDown,
-        'mouseup': MouseUp,
         'mouseleave': MouseLeave,
         'click': Click
     })
