@@ -421,5 +421,3 @@ $('#preload').append(`<img src='images/Unknown.png'></img>`)
 $('#preload').append(`<img src='images/Flag.png'></img>`)
 $('#preload').append(`<img src='images/Empty.png'></img>`)
 $('#preload').append(`<img src='images/ClickedMine.png'></img>`)
-
-$('#preload').remove();
